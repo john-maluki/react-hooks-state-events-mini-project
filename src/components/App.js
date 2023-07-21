@@ -9,22 +9,11 @@ console.log({ CATEGORIES, TASKS });
 
 function App() {
   const [taskItems, setTaskItems] = useState(TASKS);
-  const [currectSelectedButton, setCurrectSelectedButton] = useState("All");
-  const [buttonState, setButtonState] = useState({
-    All: true,
-    Code: false,
-    Food: false,
-    Money: false,
-    Misc: false,
-  });
+  const [currectSelectedButtonIndex, setCurrectSelectedButtonIndex] =
+    useState(0);
 
-  const changeSelectedButton = (category) => {
-    setCurrectSelectedButton(category);
-    setButtonState({
-      ...buttonState,
-      [currectSelectedButton]: false,
-      [category]: true,
-    });
+  const changeSelectedButton = (index) => {
+    setCurrectSelectedButtonIndex(index);
   };
 
   const deleteTask = (taskIndex) => {
@@ -46,10 +35,10 @@ function App() {
   };
 
   const filtedTasks = taskItems.filter((task) => {
-    if (currectSelectedButton === "All") {
+    if (CATEGORIES[currectSelectedButtonIndex] === "All") {
       return true;
     } else {
-      return task.category === currectSelectedButton;
+      return task.category === CATEGORIES[currectSelectedButtonIndex];
     }
   });
 
@@ -58,7 +47,7 @@ function App() {
       <h2>My tasks</h2>
       <CategoryFilter
         categories={CATEGORIES}
-        buttonState={buttonState}
+        categoryIndex={currectSelectedButtonIndex}
         onSelectedButtonChange={changeSelectedButton}
       />
       <NewTaskForm
